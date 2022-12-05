@@ -105,8 +105,8 @@ impl Player {
 
         self.vel -= self.vel * self.vel.length() * 0.9 * dt;
 
-        if self.vel.x.abs() < 2.0 && self.acc.x.abs() == 0. {
-            self.vel.x = 0.0
+        if self.vel.length_squared() < 2.0 {
+            self.vel = Vec2::default();
         }
 
         self.acc = Vec2::default();

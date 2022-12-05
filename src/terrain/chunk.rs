@@ -1,7 +1,7 @@
 use bevy::{
     prelude::*,
 };
-use noise::{NoiseFn, Perlin, Seedable};
+use noise::{NoiseFn, Perlin};
 
 use crate::terrain::meshing::ChunkTileMapBuilder;
 
@@ -9,9 +9,10 @@ pub const TEXTURE_DIMENSION: f32 = 8.0;
 pub const TEXTURES: usize = 64;
 pub const AIR: usize = TEXTURES - 1;
 
-pub const DIRT: usize = 0;
+pub const DIRT:  usize = 0;
 pub const GRASS: usize = 1;
 pub const STONE: usize = 2;
+pub const WATER: usize = TEXTURE_DIMENSION as usize;
 
 pub const CHUNK_SIZE: usize = 16;
 
@@ -39,7 +40,7 @@ impl Chunk {
         let mut blocks = [[AIR; CHUNK_SIZE]; CHUNK_SIZE];
         let coordinate = cord;
 
-        let frequency = 1.75;
+        let frequency = 0.5;
         let octaves = 3;
 
         for x in 0..CHUNK_SIZE {
@@ -63,7 +64,13 @@ impl Chunk {
                     den += 1.0 / (i as f64).powi(i);
                 }
 
-                blocks[x][y] = (val * 3.0 / den) as usize;
+                val *= (3.0 / den) - 0.1;
+
+                if val > 0. {
+                    blocks[x][y] = val as usize;
+                } else {
+                    blocks[x][y] = WATER;
+                }
             }
         }
 
