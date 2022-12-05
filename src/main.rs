@@ -1,8 +1,13 @@
+mod terrain;
+mod player;
+
 use bevy::{
     prelude::*,
 };
 use bevy::window::PresentMode;
 use bevy_debug_text_overlay::OverlayPlugin;
+use crate::player::player::PlayerPlugin;
+use crate::terrain::chunk_handler::ChunkHandlerPlugin;
 
 fn main() {
     App::new()
@@ -17,6 +22,8 @@ fn main() {
         }).set(ImagePlugin::default_nearest()))
         .insert_resource(ClearColor(Color::rgb(0.4, 0.4, 0.4)))
         .add_plugin(OverlayPlugin { font_size: 22.0, ..default() })
+        .add_plugin(ChunkHandlerPlugin)
+        .add_plugin(PlayerPlugin)
         .add_startup_system(setup)
         .run();
 }
