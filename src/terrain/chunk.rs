@@ -33,6 +33,7 @@ pub struct ChunkCoordinate {
 }
 
 impl Chunk {
+    #[allow(unused_variables)]
     pub fn new(
         cord: Vec2,
         seed: u32
@@ -64,6 +65,7 @@ impl Chunk {
         }
     }
 
+    #[allow(dead_code)]
     pub fn set_block(
         &mut self,
         x: usize,

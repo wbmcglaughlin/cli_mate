@@ -6,8 +6,6 @@ use crate::player::player::Player;
 
 pub const SPEED: f32 = 100.0;
 pub const SIDE_SPEED_FACTOR: f32 = 1.;
-pub const GRAVITY: f32 = 100.;
-pub const PLAYER_HALF_HEIGHT: f32 = 0.5;
 
 pub fn player_movement(
     keyboard_input: Res<Input<KeyCode>>,

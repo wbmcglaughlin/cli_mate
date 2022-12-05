@@ -52,6 +52,7 @@ impl ChunkHandler {
         panic!("Chunk does not exist")
     }
 
+    #[allow(dead_code)]
     pub fn get_chunk_xy(
         &mut self,
         coordinate: Vec2
@@ -66,6 +67,7 @@ impl ChunkHandler {
         (chunk, x, y)
     }
 
+    #[allow(dead_code)]
     pub fn update_chunk(
         &mut self,
         chunk_coordinate: Vec2,
@@ -77,6 +79,7 @@ impl ChunkHandler {
         chunk.set_block(x, y, new_block);
     }
 
+    #[allow(dead_code)]
     pub fn chunks_to_remesh(
         &mut self,
         chunk_coord: Vec2
@@ -97,7 +100,7 @@ fn remove_chunks(
 
             let mut chunks_to_remove: HashSet<Entity> = HashSet::new();
 
-            for (chunk_entity, mut chunk_coordinate) in chunks.iter_mut() {
+            for (chunk_entity, chunk_coordinate) in chunks.iter_mut() {
                 let distance = transform.translation.distance_squared(chunk_coordinate.coordinate.extend(0.0) * CHUNK_SIDE_SIZE);
 
                 if distance > CHUNK_SIDE_SIZE * CHUNK_SIDE_SIZE * VISIBLE_CHUNKS as f32 * VISIBLE_CHUNKS as f32 {
@@ -160,7 +163,7 @@ pub fn update_chunks(
                     let mut chunk = Chunk::new(coord, 0);
                     let mesh = chunk.generate_mesh();
 
-                    let chunk_ent = commands.spawn((ChunkCoordinate {
+                    commands.spawn((ChunkCoordinate {
                         coordinate: coord
                     }, MaterialMesh2dBundle  {
                         mesh: meshes.add(mesh).into(),
@@ -170,7 +173,7 @@ pub fn update_chunks(
                             coord.y * CHUNK_SIDE_SIZE,
                             0.0),
                         ..Default::default()
-                    })).id();
+                    }));
 
                     chunk_handler.chunks.push(chunk);
                 }

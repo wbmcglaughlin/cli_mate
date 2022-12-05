@@ -1,10 +1,9 @@
 use bevy::{
     prelude::*,
 };
-use bevy_debug_text_overlay::screen_print;
+
 use crate::MainCamera;
 use crate::player::control::player_movement;
-use crate::terrain::chunk::CHUNK_SIDE_SIZE;
 
 #[derive(Component, Deref, DerefMut)]
 struct PlayerAnimationTimer(Timer);
@@ -69,7 +68,7 @@ pub fn spawn_player(
     // Set player position
     let player_position = Vec2::new(0.0, 2.0);
 
-    let player_entity = commands.spawn((
+    commands.spawn((
         Player {
             pos: player_position,
             vel: Vec2::default(),
@@ -84,7 +83,7 @@ pub fn spawn_player(
             ..default()
         },
         PlayerAnimationTimer(Timer::from_seconds(0.15, TimerMode::Repeating))
-    )).id();
+    ));
 }
 
 #[derive(Component)]
@@ -114,8 +113,7 @@ impl Player {
     }
 
     pub fn add_acc(&mut self, acc: Vec2) {
-        let mut accel = acc.clone();
-        self.acc += accel;
+        self.acc += acc;
     }
 }
 
