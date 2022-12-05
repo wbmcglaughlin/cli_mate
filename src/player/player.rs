@@ -32,7 +32,7 @@ fn animate_sprite(
     for (player, mut timer,
         mut sprite, texture_atlas_handle) in &mut query {
         // Check if the player is moving.
-        if player.vel.x.abs() > 0. {
+        if player.vel.length_squared() > 0. {
             // Check which direction player is moving in.
             if player.vel.x < 0. {
                 sprite.flip_x = true;

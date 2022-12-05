@@ -1,7 +1,8 @@
 use bevy::{
     prelude::*,
 };
-use rand::Rng;
+use noise::{NoiseFn, Perlin, Seedable};
+
 use crate::terrain::meshing::ChunkTileMapBuilder;
 
 pub const TEXTURE_DIMENSION: f32 = 8.0;
@@ -17,9 +18,6 @@ pub const CHUNK_SIZE: usize = 16;
 pub const TILE_SIZE: f32 = 1.0;
 pub const CHUNK_SIDE_SIZE: f32 = TILE_SIZE * CHUNK_SIZE as f32;
 
-pub const GROUND_LEVEL: f32 = 0.0;
-pub const STONE_LEVEL: f32 = -10.0;
-
 #[derive(Component)]
 pub struct Chunk {
     pub blocks: [[usize; CHUNK_SIZE]; CHUNK_SIZE],
@@ -33,28 +31,39 @@ pub struct ChunkCoordinate {
 }
 
 impl Chunk {
-    #[allow(unused_variables)]
     pub fn new(
         cord: Vec2,
         seed: u32
     ) -> Self {
-        let mut prng = rand::thread_rng();
+        let mut prng = Perlin::new(seed);
         let mut blocks = [[AIR; CHUNK_SIZE]; CHUNK_SIZE];
         let coordinate = cord;
 
+        let frequency = 1.75;
+        let octaves = 3;
+
         for x in 0..CHUNK_SIZE {
             for y in 0..CHUNK_SIZE {
-                let level = coordinate.y * CHUNK_SIDE_SIZE + y as f32 * TILE_SIZE;
-                if level < GROUND_LEVEL {
-                    if level < STONE_LEVEL + prng.gen::<f32>() * 5.0 {
-                        blocks[x][y] = STONE;
-                    } else {
-                        blocks[x][y] = DIRT;
-                    }
+                let point = (
+                    Vec2::new(x as f32, y as f32) + coordinate * CHUNK_SIDE_SIZE as f32)
+                    / (CHUNK_SIDE_SIZE as f32) * frequency;
+
+                let mut val = 0.0;
+                let mut den = 0.0;
+
+                for i in 0..octaves {
+                    val += 1.0 / (i as f64).powi(i)
+                        * prng.get(
+                        [
+                            point.x as f64 * (i as f64).powi(i),
+                            point.y as f64 * (i as f64).powi(i)
+                        ]
+                    );
+
+                    den += 1.0 / (i as f64).powi(i);
                 }
-                if coordinate.y * CHUNK_SIDE_SIZE + y as f32 * TILE_SIZE == GROUND_LEVEL - 1.0 {
-                    blocks[x][y] = GRASS;
-                }
+
+                blocks[x][y] = (val * 3.0 / den) as usize;
             }
         }
 
