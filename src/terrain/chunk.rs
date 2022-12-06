@@ -40,14 +40,14 @@ impl Chunk {
         let mut blocks = [[AIR; CHUNK_SIZE]; CHUNK_SIZE];
         let coordinate = cord;
 
-        let frequency = 0.5;
-        let octaves = 3;
+        let frequency = 0.1;
+        let octaves = 5;
 
         for x in 0..CHUNK_SIZE {
             for y in 0..CHUNK_SIZE {
-                let point = (
-                    Vec2::new(x as f32, y as f32) + coordinate * CHUNK_SIDE_SIZE as f32)
-                    / (CHUNK_SIDE_SIZE as f32) * frequency;
+                let point =
+                    (Vec2::new(x as f32, y as f32) / CHUNK_SIZE as f32 + coordinate)
+                    * frequency;
 
                 let mut val = 0.0;
                 let mut den = 0.0;
