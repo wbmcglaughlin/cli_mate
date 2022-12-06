@@ -6,11 +6,23 @@ pub struct BiomeHandle {
 }
 
 pub struct Biome {
-    tiles: Vec<Tile>,
-    weight: u16
+    pub tiles: Vec<Tile>,
+    pub weight: u16
 }
 
+#[derive(Clone)]
 pub struct Tile {
-    tile_type: u8,
-    weight: u16
+    pub(crate) tile_type: usize,
+    pub weight: u16
+}
+
+impl Tile {
+    pub fn set_weight(
+        mut self,
+        weight: u16
+    ) -> Tile {
+        self.weight = weight;
+
+        self
+    }
 }

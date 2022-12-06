@@ -9,6 +9,7 @@ use bevy::window::PresentMode;
 use bevy_debug_text_overlay::OverlayPlugin;
 use crate::player::player::PlayerPlugin;
 use crate::terrain::chunk_handler::ChunkHandlerPlugin;
+use crate::terrain::terrain::TerrainPlugin;
 
 fn main() {
     App::new()
@@ -25,6 +26,7 @@ fn main() {
         .add_plugin(OverlayPlugin { font_size: 22.0, ..default() })
         .add_plugin(ChunkHandlerPlugin)
         .add_plugin(PlayerPlugin)
+        .add_plugin(TerrainPlugin)
         .add_startup_system(setup)
         .run();
 }
