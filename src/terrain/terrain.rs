@@ -16,7 +16,7 @@ impl Plugin for TerrainPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(BiomeHandle {
             biomes: Vec::new()
-        }).add_system(init_biomes);
+        }).add_startup_system(init_biomes);
     }
 }
 
@@ -35,28 +35,20 @@ fn init_biomes(
 
     let stone_tile: Tile = Tile {
         tile_type: STONE,
-        weight: 2
+        weight: 5
     };
 
     // Biome 0: PLAINS BIOME
-    let plains_biome: Biome = Biome {
-        tiles: vec![
-            grass_tile.clone(),
-            dirt_tile.clone(),
-            stone_tile.clone()
-        ],
-        weight: 20
-    };
+    let plains_biome: Biome = Biome::new(20)
+        .add_tile(grass_tile.clone())
+        .add_tile(dirt_tile.clone())
+        .add_tile(stone_tile.clone());
 
     // Biome 1: DESERT BIOME
-    let desert_biome: Biome = Biome {
-        tiles: vec![
-            grass_tile.clone().set_weight(2),
-            dirt_tile.clone(),
-            stone_tile.clone().set_weight(40)
-        ],
-        weight: 20
-    };
+    let desert_biome: Biome = Biome::new(20)
+        .add_tile(grass_tile.clone().set_weight(2))
+        .add_tile(dirt_tile.clone())
+        .add_tile(stone_tile.clone().set_weight(40));
 
     // Biome 2: GRASSLANDS BIOME
     // TODO: add biomes

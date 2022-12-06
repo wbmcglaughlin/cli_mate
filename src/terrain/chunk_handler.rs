@@ -5,6 +5,7 @@ use bevy::sprite::{MaterialMesh2dBundle};
 use bevy::utils::HashSet;
 use crate::terrain::chunk::{Chunk, CHUNK_SIDE_SIZE, ChunkCoordinate};
 use crate::player::player::{Player};
+use crate::terrain::biome::BiomeHandle;
 
 pub const VISIBLE_CHUNKS: i32 = 3;
 
@@ -123,7 +124,8 @@ pub fn update_chunks(
     mut materials: ResMut<Assets<ColorMaterial>>,
     players: Query<&Player, With<Player>>,
     chunks: Query<(Entity, &mut ChunkCoordinate), (With<ChunkCoordinate>, Without<Player>)>,
-    mut chunk_handler: ResMut<ChunkHandler>
+    mut chunk_handler: ResMut<ChunkHandler>,
+    biome_handle: ResMut<BiomeHandle>
 ) {
     // Remesh Chunks
     for coord_to_remesh in chunk_handler.chunks_to_remesh.clone() {
@@ -160,7 +162,7 @@ pub fn update_chunks(
             for y in (-VISIBLE_CHUNKS+1)..VISIBLE_CHUNKS {
                 let coord = player_coordinate + Vec2::new(x as f32, y as f32);
                 if !chunk_handler.contains_chunk(coord) {
-                    let mut chunk = Chunk::new(coord, 0);
+                    let mut chunk = Chunk::new(coord, 0, &biome_handle);
                     let mesh = chunk.generate_mesh();
 
                     commands.spawn((ChunkCoordinate {

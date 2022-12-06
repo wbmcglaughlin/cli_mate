@@ -5,9 +5,61 @@ pub struct BiomeHandle {
     pub biomes: Vec<Biome>
 }
 
+#[derive(Clone)]
 pub struct Biome {
-    pub tiles: Vec<Tile>,
-    pub weight: u16
+    tiles: Vec<Tile>,
+    pub weight: u16,
+    tiles_weight_sum: u16
+}
+
+impl Biome {
+    pub fn new(
+        weight: u16
+    ) -> Self {
+        Biome {
+            tiles: Vec::new(),
+            weight,
+            tiles_weight_sum: 0
+        }
+    }
+
+    pub fn add_tile(
+        mut self,
+        tile: Tile
+    ) -> Self {
+        self.tiles.push(tile.clone());
+        self.tiles_weight_sum += tile.weight.clone();
+        self
+    }
+
+    pub fn get_tile_from_rng(
+        &self,
+        rng: f32
+    ) -> usize {
+        assert!(rng < 1.0 && rng >= 0.0);
+
+        let mut sum: u16 = 0;
+        let val: u16 = (rng * self.tiles_weight_sum as f32) as u16;
+
+        for tile in &self.tiles {
+            sum += tile.weight;
+            if sum > val {
+                return tile.tile_type;
+            }
+        }
+
+        panic!("Tile weight calculation error.")
+    }
+}
+
+impl Default for Biome {
+    fn default() -> Self {
+        Biome {
+            tiles: Vec::new(),
+            weight: 0,
+            tiles_weight_sum: 0
+        }
+    }
 }
 
 #[derive(Clone)]

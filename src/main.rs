@@ -1,3 +1,5 @@
+extern crate core;
+
 mod terrain;
 mod player;
 
