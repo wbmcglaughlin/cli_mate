@@ -6,7 +6,7 @@ pub fn get_noise(
     coordinate: Vec2,
     seed: u32,
 ) -> [[f64; CHUNK_SIZE]; CHUNK_SIZE] {
-    let mut prng = Perlin::new(seed);
+    let prng = Perlin::new(seed);
 
     let frequency = 0.1;
     let octaves = 5;

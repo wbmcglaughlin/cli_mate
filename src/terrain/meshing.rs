@@ -2,7 +2,8 @@ use bevy::{
     prelude::*,
 };
 use bevy::render::mesh::{Indices, PrimitiveTopology};
-use crate::terrain::chunk::{TEXTURE_DIMENSION, TILE_SIZE};
+use crate::terrain::chunk::{TILE_SIZE};
+use crate::terrain::terrain::TEXTURE_DIMENSION;
 
 #[derive(Default)]
 pub struct ChunkTileMapBuilder {

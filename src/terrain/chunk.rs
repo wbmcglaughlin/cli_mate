@@ -1,19 +1,9 @@
 use bevy::{
     prelude::*,
 };
-use noise::{NoiseFn, Perlin};
-
 use crate::terrain::meshing::ChunkTileMapBuilder;
 use crate::terrain::noise::get_noise;
-
-pub const TEXTURE_DIMENSION: f32 = 8.0;
-pub const TEXTURES: usize = 64;
-pub const AIR: usize = TEXTURES - 1;
-
-pub const DIRT:  usize = 0;
-pub const GRASS: usize = 1;
-pub const STONE: usize = 2;
-pub const WATER: usize = TEXTURE_DIMENSION as usize;
+use crate::terrain::terrain::{AIR, WATER};
 
 pub const CHUNK_SIZE: usize = 16;
 
