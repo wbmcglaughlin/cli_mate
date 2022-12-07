@@ -1,5 +1,6 @@
 use bevy::prelude::Resource;
 use crate::terrain::chunk::CHUNK_SIZE;
+use crate::terrain::foliage::Foliage;
 
 #[derive(Resource)]
 pub struct BiomeHandle {
@@ -76,21 +77,28 @@ impl BiomeHandle {
 #[derive(Clone)]
 pub struct Biome {
     tiles: Vec<TileType>,
+    foliage: Vec<Foliage>,
     pub weight: u16,
     pub biome_type: BiomeType,
-    tiles_weight_sum: u16
+    pub foliage_density: f32,
+    tiles_weight_sum: u16,
+    foliage_weight_sum: u16
 }
 
 impl Biome {
     pub fn new(
         weight: u16,
-        biome_type: BiomeType
+        biome_type: BiomeType,
+        foliage_density: f32
     ) -> Self {
         Biome {
             tiles: Vec::new(),
+            foliage: Vec::new(),
             weight,
             biome_type,
-            tiles_weight_sum: 0
+            foliage_density,
+            tiles_weight_sum: 0,
+            foliage_weight_sum: 0
         }
     }
 
@@ -100,6 +108,15 @@ impl Biome {
     ) -> Self {
         self.tiles.push(tile.clone());
         self.tiles_weight_sum += tile.weight.clone();
+        self
+    }
+
+    pub fn add_foliage(
+        mut self,
+        foliage: Foliage
+    ) -> Self {
+        self.foliage.push(foliage.clone());
+        self.foliage_weight_sum += foliage.weight;
         self
     }
 
@@ -127,9 +144,12 @@ impl Default for Biome {
     fn default() -> Self {
         Biome {
             tiles: Vec::new(),
+            foliage: Vec::new(),
             biome_type: BiomeType::PLAINS,
             weight: 0,
-            tiles_weight_sum: 0
+            foliage_density: 0.0,
+            tiles_weight_sum: 0,
+            foliage_weight_sum: 0
         }
     }
 }
