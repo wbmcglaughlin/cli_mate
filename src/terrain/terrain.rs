@@ -64,7 +64,7 @@ fn init_biomes(
         .add_tile(water_tile.clone());
 
     // Biome 1: DESERT BIOME
-    let desert_biome: Biome = Biome::new(20, BiomeType::DESERT, 0.05)
+    let desert_biome: Biome = Biome::new(20, BiomeType::DESERT, 0.3)
         .add_tile(dirt_tile.clone().set_weight(4))
         .add_tile(sand_tile.clone().set_weight(20))
         .add_foliage(cactus.clone());

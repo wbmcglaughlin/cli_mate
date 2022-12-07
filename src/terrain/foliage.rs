@@ -4,7 +4,7 @@ pub struct Foliage {
     pub weight: u16
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub enum FoliageType {
     NONE,
     CACTUS
@@ -12,7 +12,7 @@ pub enum FoliageType {
 
 pub fn get_foliage_paths(foliage_type: FoliageType) -> &'static str {
     match foliage_type {
-        FoliageType::CACTUS => {"foliage/cactus.png"}
+        FoliageType::CACTUS => {"sprites/foliage/cactus.png"}
         FoliageType::NONE => {""}
     }
 }

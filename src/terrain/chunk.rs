@@ -42,6 +42,7 @@ impl Chunk {
         let biome_type: [[BiomeType; CHUNK_SIZE]; CHUNK_SIZE] = biome_handle.get_biome_type_array_from_rng(biome_noise);
 
         // Foliage array
+        let foliage_noise = get_noise(coordinate, seed, 5.0, 5);
         let mut foliage_type: [[FoliageType; CHUNK_SIZE]; CHUNK_SIZE] = [[FoliageType::NONE; CHUNK_SIZE]; CHUNK_SIZE];
 
         // Iterate over each tile in chunk
@@ -57,7 +58,7 @@ impl Chunk {
                 };
 
                 // Set foliage
-                foliage_type[x][y] = biome.get_foliage_from_rng(noise[x][y]);
+                foliage_type[x][y] = biome.get_foliage_from_rng(foliage_noise[x][y]);
             }
         }
 
