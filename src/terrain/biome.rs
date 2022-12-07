@@ -48,16 +48,19 @@ impl BiomeHandle {
 pub struct Biome {
     tiles: Vec<Tile>,
     pub weight: u16,
+    pub biome_type: BiomeType,
     tiles_weight_sum: u16
 }
 
 impl Biome {
     pub fn new(
-        weight: u16
+        weight: u16,
+        biome_type: BiomeType
     ) -> Self {
         Biome {
             tiles: Vec::new(),
             weight,
+            biome_type,
             tiles_weight_sum: 0
         }
     }
@@ -99,6 +102,14 @@ impl Default for Biome {
             tiles_weight_sum: 0
         }
     }
+}
+
+pub enum BiomeType {
+    PLAINS,
+    DESERT,
+    GRASSLAND,
+    BEACH,
+    OCEAN
 }
 
 #[derive(Clone)]

@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use crate::terrain::biome::{Biome, BiomeHandle, Tile};
+use crate::terrain::biome::{Biome, BiomeHandle, BiomeType, Tile};
 
 pub const TEXTURE_DIMENSION: f32 = 8.0;
 
@@ -48,30 +48,30 @@ fn init_biomes(
     };
 
     // Biome 0: PLAINS BIOME
-    let plains_biome: Biome = Biome::new(20)
+    let plains_biome: Biome = Biome::new(20, BiomeType::PLAINS)
         .add_tile(grass_tile.clone())
         .add_tile(dirt_tile.clone())
         .add_tile(stone_tile.clone())
         .add_tile(water_tile.clone());
 
     // Biome 1: DESERT BIOME
-    let desert_biome: Biome = Biome::new(20)
+    let desert_biome: Biome = Biome::new(20, BiomeType::DESERT)
         .add_tile(dirt_tile.clone().set_weight(4))
         .add_tile(sand_tile.clone().set_weight(20));
 
     // Biome 2: GRASSLANDS BIOME
-    let grassland_biome: Biome = Biome::new(30)
+    let grassland_biome: Biome = Biome::new(30, BiomeType::GRASSLAND)
         .add_tile(grass_tile.clone().set_weight(20))
         .add_tile(dirt_tile.clone().set_weight(4))
         .add_tile(stone_tile.clone().set_weight(4))
         .add_tile(water_tile.clone().set_weight(10));
 
     // Biome 3: BEACH BIOME
-    let beach_biome: Biome = Biome::new(5)
+    let beach_biome: Biome = Biome::new(5, BiomeType::BEACH)
         .add_tile(water_tile.clone().set_weight(4))
         .add_tile(sand_tile.clone().set_weight(10));
 
-    let ocean_biome: Biome = Biome::new(5)
+    let ocean_biome: Biome = Biome::new(5, BiomeType::OCEAN)
         .add_tile(water_tile.clone().set_weight(30))
         .add_tile(sand_tile.clone().set_weight(4));
 
@@ -82,3 +82,4 @@ fn init_biomes(
     biome_handle.add_biome(beach_biome);
     biome_handle.add_biome(ocean_biome);
 }
+
