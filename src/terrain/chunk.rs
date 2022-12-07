@@ -95,6 +95,9 @@ impl Chunk {
 
         let mesh = self.chunk_tile_map_builder.build();
 
+        // Clear chunk builder
+        self.clear_builder();
+
         mesh
     }
 

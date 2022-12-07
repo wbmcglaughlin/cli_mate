@@ -131,23 +131,21 @@ pub fn update_chunks(
     for coord_to_remesh in chunk_handler.chunks_to_remesh.clone() {
         for (entity, chunk_coord) in chunks.iter() {
             if chunk_coord.coordinate == coord_to_remesh {
-                let chunk = chunk_handler.get_chunk(coord_to_remesh);
-                chunk.clear_builder();
+                // Get chunk to remesh
+                let mut chunk = chunk_handler.get_chunk(coord_to_remesh);
+
+                // Generate new mesh
                 let new_mesh = chunk.generate_mesh();
 
+                // De-spawn old chunk
                 commands.entity(entity).despawn_recursive();
 
-                commands.spawn((ChunkCoordinate {
-                    coordinate: chunk_coord.coordinate
-                }, MaterialMesh2dBundle  {
-                    mesh: meshes.add(new_mesh).into(),
-                    material: materials.add(ColorMaterial::from(asset_server.load("tiles/tiles.png"))),
-                    transform: Transform::from_xyz(
-                        chunk_coord.coordinate.x * CHUNK_SIDE_SIZE,
-                        chunk_coord.coordinate.y * CHUNK_SIDE_SIZE,
-                        0.0),
-                    ..Default::default()
-                }));
+                // Spawn new chunk
+                spawn_chunk(&mut commands,
+                            &asset_server,
+                            &mut meshes,
+                            &mut materials,
+                            &mut chunk);
             }
         }
     }
@@ -163,23 +161,38 @@ pub fn update_chunks(
                 let coord = player_coordinate + Vec2::new(x as f32, y as f32);
                 if !chunk_handler.contains_chunk(coord) {
                     let mut chunk = Chunk::new(coord, 0, &biome_handle);
-                    let mesh = chunk.generate_mesh();
 
-                    let chunk_entity = commands.spawn((ChunkCoordinate {
-                        coordinate: coord
-                    }, MaterialMesh2dBundle  {
-                        mesh: meshes.add(mesh).into(),
-                        material: materials.add(ColorMaterial::from(asset_server.load("tiles/tiles.png"))),
-                        transform: Transform::from_xyz(
-                            coord.x * CHUNK_SIDE_SIZE,
-                            coord.y * CHUNK_SIDE_SIZE,
-                            0.0),
-                        ..Default::default()
-                    })).id();
+                    spawn_chunk(&mut commands,
+                                &asset_server,
+                                &mut meshes,
+                                &mut materials,
+                                &mut chunk);
 
                     chunk_handler.chunks.push(chunk);
                 }
             }
         }
     }
+}
+
+pub fn spawn_chunk(
+    commands: &mut Commands,
+    asset_server: &Res<AssetServer>,
+    meshes: &mut ResMut<Assets<Mesh>>,
+    materials: &mut ResMut<Assets<ColorMaterial>>,
+    chunk: &mut Chunk
+) {
+    let mesh = chunk.generate_mesh();
+
+    commands.spawn((ChunkCoordinate {
+        coordinate: chunk.coordinate
+    }, MaterialMesh2dBundle  {
+        mesh: meshes.add(mesh).into(),
+        material: materials.add(ColorMaterial::from(asset_server.load("tiles/tiles.png"))),
+        transform: Transform::from_xyz(
+            chunk.coordinate.x * CHUNK_SIDE_SIZE,
+            chunk.coordinate.y * CHUNK_SIDE_SIZE,
+            0.0),
+        ..Default::default()
+    }));
 }
