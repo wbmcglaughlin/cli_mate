@@ -4,7 +4,6 @@ use bevy::{
 use crate::terrain::biome::BiomeHandle;
 use crate::terrain::meshing::ChunkTileMapBuilder;
 use crate::terrain::noise::get_noise;
-use crate::terrain::terrain::{AIR, WATER};
 
 pub const CHUNK_SIZE: usize = 16;
 
@@ -29,14 +28,14 @@ impl Chunk {
         seed: u32,
         biome_handle: &ResMut<BiomeHandle>
     ) -> Self {
-        let mut blocks = [[AIR; CHUNK_SIZE]; CHUNK_SIZE];
+        let mut blocks = [[0; CHUNK_SIZE]; CHUNK_SIZE];
         let coordinate = cord;
-        let noise = get_noise(coordinate, seed);
-        let biome = biome_handle.biomes[0].clone();
+        let noise = get_noise(coordinate, seed, 0.7, 5);
+        let biome_noise = get_noise(coordinate, seed, 0.1, 3);
 
         for x in 0..CHUNK_SIZE {
             for y in 0..CHUNK_SIZE {
-                blocks[x][y] = biome.get_tile_from_rng(noise[x][y]);
+                blocks[x][y] = biome_handle.get_biome_from_rng(biome_noise[x][y]).get_tile_from_rng(noise[x][y]);
             }
         }
 

@@ -5,11 +5,10 @@ use crate::terrain::chunk::CHUNK_SIZE;
 pub fn get_noise(
     coordinate: Vec2,
     seed: u32,
+    frequency: f32,
+    octaves: i32
 ) -> [[f32; CHUNK_SIZE]; CHUNK_SIZE] {
     let prng = Perlin::new(seed);
-
-    let frequency = 1.0;
-    let octaves = 5;
 
     let mut noise = [[0.0; CHUNK_SIZE]; CHUNK_SIZE];
 

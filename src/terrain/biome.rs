@@ -2,7 +2,46 @@ use bevy::prelude::Resource;
 
 #[derive(Resource)]
 pub struct BiomeHandle {
-    pub biomes: Vec<Biome>
+    pub biomes: Vec<Biome>,
+    pub biomes_weight_sum: u16
+}
+
+impl BiomeHandle {
+    pub fn new(
+
+    ) -> Self {
+        BiomeHandle {
+            biomes: Vec::new(),
+            biomes_weight_sum: 0
+        }
+    }
+
+    pub fn add_biome(
+        &mut self,
+        biome: Biome
+    ) {
+        self.biomes.push(biome.clone());
+        self.biomes_weight_sum += biome.weight;
+    }
+
+    pub fn get_biome_from_rng(
+        &self,
+        rng: f32
+    ) -> &Biome {
+        assert!(rng < 1.0 && rng >= 0.0);
+
+        let mut sum: u16 = 0;
+        let val: u16 = (rng * self.biomes_weight_sum as f32) as u16;
+
+        for biome in &self.biomes {
+            sum += biome.weight;
+            if sum > val {
+                return biome;
+            }
+        }
+
+        panic!("Tile weight calculation error.")
+    }
 }
 
 #[derive(Clone)]
