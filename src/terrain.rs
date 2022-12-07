@@ -9,6 +9,7 @@ pub mod noise;
 pub mod biome;
 pub mod terrain;
 pub mod foliage;
+pub mod tile;
 
 pub struct SurfacePlugin;
 impl Plugin for SurfacePlugin {

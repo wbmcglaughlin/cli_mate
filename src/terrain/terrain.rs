@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use crate::terrain::biome::{Biome, BiomeHandle, BiomeType, Tile};
+use crate::terrain::biome::{Biome, BiomeHandle, BiomeType, TileType};
 
 pub const TEXTURE_DIMENSION: f32 = 8.0;
 
@@ -22,27 +22,27 @@ impl Plugin for TerrainPlugin {
 fn init_biomes(
     mut biome_handle: ResMut<BiomeHandle>
 ) {
-    let grass_tile: Tile = Tile {
+    let grass_tile: TileType = TileType {
         tile_type: GRASS,
         weight: 10
     };
 
-    let dirt_tile: Tile = Tile {
+    let dirt_tile: TileType = TileType {
         tile_type: DIRT,
         weight: 5
     };
 
-    let stone_tile: Tile = Tile {
+    let stone_tile: TileType = TileType {
         tile_type: STONE,
         weight: 5
     };
 
-    let sand_tile: Tile = Tile {
+    let sand_tile: TileType = TileType {
         tile_type: SAND,
         weight: 5
     };
 
-    let water_tile: Tile = Tile {
+    let water_tile: TileType = TileType {
         tile_type: WATER,
         weight: 6
     };
