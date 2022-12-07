@@ -165,7 +165,7 @@ pub fn update_chunks(
                     let mut chunk = Chunk::new(coord, 0, &biome_handle);
                     let mesh = chunk.generate_mesh();
 
-                    commands.spawn((ChunkCoordinate {
+                    let chunk_entity = commands.spawn((ChunkCoordinate {
                         coordinate: coord
                     }, MaterialMesh2dBundle  {
                         mesh: meshes.add(mesh).into(),
@@ -175,7 +175,7 @@ pub fn update_chunks(
                             coord.y * CHUNK_SIDE_SIZE,
                             0.0),
                         ..Default::default()
-                    }));
+                    })).id();
 
                     chunk_handler.chunks.push(chunk);
                 }

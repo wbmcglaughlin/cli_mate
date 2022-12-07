@@ -2,6 +2,7 @@ use bevy::{
     prelude::*,
 };
 use crate::terrain::biome::{BiomeHandle, BiomeType};
+use crate::terrain::foliage::FoliageType;
 use crate::terrain::meshing::ChunkTileMapBuilder;
 use crate::terrain::noise::get_noise;
 use crate::terrain::tile::Tile;
@@ -14,6 +15,7 @@ pub const CHUNK_SIDE_SIZE: f32 = TILE_SIZE * CHUNK_SIZE as f32;
 #[derive(Component)]
 pub struct Chunk {
     pub tiles: [[Tile; CHUNK_SIZE]; CHUNK_SIZE],
+    pub foliage_type: [[FoliageType; CHUNK_SIZE]; CHUNK_SIZE],
     pub coordinate: Vec2,
     chunk_tile_map_builder: ChunkTileMapBuilder,
 }
@@ -39,18 +41,29 @@ impl Chunk {
         let biome_noise = get_noise(coordinate, seed, 0.1, 3);
         let biome_type: [[BiomeType; CHUNK_SIZE]; CHUNK_SIZE] = biome_handle.get_biome_type_array_from_rng(biome_noise);
 
+        // Foliage array
+        let mut foliage_type: [[FoliageType; CHUNK_SIZE]; CHUNK_SIZE] = [[FoliageType::NONE; CHUNK_SIZE]; CHUNK_SIZE];
+
+        // Iterate over each tile in chunk
         for x in 0..CHUNK_SIZE {
             for y in 0..CHUNK_SIZE {
-                let tile_type = biome_handle.get_biome(biome_type[x][y]).get_tile_from_rng(noise[x][y]);
+                let biome = biome_handle.get_biome(biome_type[x][y]);
+                let tile_type = biome.get_tile_from_rng(noise[x][y]);
+
+                // Set tile
                 tiles[x][y] = Tile {
                     tile: tile_type,
                     biome: biome_type[x][y].clone()
-                }
+                };
+
+                // Set foliage
+                foliage_type[x][y] = biome.get_foliage_from_rng(noise[x][y]);
             }
         }
 
         Chunk {
             tiles,
+            foliage_type,
             coordinate,
             chunk_tile_map_builder: ChunkTileMapBuilder::default()
         }

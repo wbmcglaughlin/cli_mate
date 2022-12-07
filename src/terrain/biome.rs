@@ -1,6 +1,6 @@
 use bevy::prelude::Resource;
 use crate::terrain::chunk::CHUNK_SIZE;
-use crate::terrain::foliage::Foliage;
+use crate::terrain::foliage::{Foliage, FoliageType};
 
 #[derive(Resource)]
 pub struct BiomeHandle {
@@ -137,6 +137,21 @@ impl Biome {
         }
 
         panic!("Tile weight calculation error.")
+    }
+
+    pub fn get_foliage_from_rng(
+        &self,
+        rng: f32
+    ) -> FoliageType {
+        assert!(rng < 1.0 && rng >= 0.0);
+
+        if self.foliage_weight_sum > 0 {
+            if rng < self.foliage_density {
+                return FoliageType::CACTUS;
+            }
+        }
+
+        FoliageType::NONE
     }
 }
 
