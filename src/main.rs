@@ -1,7 +1,7 @@
 extern crate core;
 
 mod terrain;
-mod player;
+mod entities;
 
 use bevy::{
     prelude::*,
@@ -9,7 +9,7 @@ use bevy::{
 
 use bevy::window::PresentMode;
 use bevy_debug_text_overlay::OverlayPlugin;
-use crate::player::player::PlayerPlugin;
+use crate::entities::player::PlayerPlugin;
 use crate::terrain::chunk_handler::ChunkHandlerPlugin;
 use crate::terrain::terrain::TerrainPlugin;
 

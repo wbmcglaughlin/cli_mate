@@ -2,8 +2,6 @@ use bevy::prelude::*;
 use crate::terrain::biome::{Biome, BiomeHandle, Tile};
 
 pub const TEXTURE_DIMENSION: f32 = 8.0;
-pub const TEXTURES: usize = 64;
-pub const AIR: usize = TEXTURES - 1;
 
 pub const DIRT:  usize = 0;
 pub const GRASS: usize = 1;

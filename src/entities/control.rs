@@ -2,7 +2,7 @@ use bevy::{
     prelude::*,
 };
 
-use crate::player::player::Player;
+use crate::entities::player::Player;
 
 pub const SPEED: f32 = 100.0;
 pub const SIDE_SPEED_FACTOR: f32 = 1.;

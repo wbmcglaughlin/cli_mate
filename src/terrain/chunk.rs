@@ -24,13 +24,17 @@ pub struct ChunkCoordinate {
 
 impl Chunk {
     pub fn new(
-        cord: Vec2,
+        coordinate: Vec2,
         seed: u32,
         biome_handle: &ResMut<BiomeHandle>
     ) -> Self {
+        // Init blocks for chunk mesh layer
         let mut blocks = [[0; CHUNK_SIZE]; CHUNK_SIZE];
-        let coordinate = cord;
+
+        // Get noise map for terrain type
         let noise = get_noise(coordinate, seed, 0.7, 5);
+
+        // Get noise map for biome type
         let biome_noise = get_noise(coordinate, seed, 0.1, 3);
 
         for x in 0..CHUNK_SIZE {

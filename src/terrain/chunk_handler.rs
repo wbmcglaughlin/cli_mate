@@ -4,7 +4,7 @@ use bevy::{
 use bevy::sprite::{MaterialMesh2dBundle};
 use bevy::utils::HashSet;
 use crate::terrain::chunk::{Chunk, CHUNK_SIDE_SIZE, ChunkCoordinate};
-use crate::player::player::{Player};
+use crate::entities::player::{Player};
 use crate::terrain::biome::BiomeHandle;
 
 pub const VISIBLE_CHUNKS: i32 = 3;
