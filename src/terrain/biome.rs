@@ -9,9 +9,7 @@ pub struct BiomeHandle {
 }
 
 impl BiomeHandle {
-    pub fn new(
-
-    ) -> Self {
+    pub fn new() -> Self {
         BiomeHandle {
             biomes: Vec::new(),
             biomes_weight_sum: 0
@@ -26,6 +24,9 @@ impl BiomeHandle {
         self.biomes_weight_sum += biome.weight;
     }
 
+    /// Retrieve biome in biome handle of biome type.
+    ///
+    /// panics when biome is not found
     pub fn get_biome(
         &self,
         biome_type: BiomeType
@@ -36,6 +37,7 @@ impl BiomeHandle {
             }
         }
 
+        // Get biome should never be called when the biome does not exist.
         panic!("Biome not found");
     }
 
@@ -141,13 +143,24 @@ impl Biome {
 
     pub fn get_foliage_from_rng(
         &self,
-        rng: f32
+        rng: f32,
+        tile_type: usize
     ) -> FoliageType {
         assert!(rng < 1.0 && rng >= 0.0);
 
         if self.foliage_weight_sum > 0 {
             if rng < self.foliage_density {
-                return FoliageType::CACTUS;
+                let mut sum: u16 = 0;
+                let val: u16 = (rng * self.foliage_weight_sum as f32) as u16;
+
+                for foliage in &self.foliage {
+                    sum += foliage.weight;
+                    if sum > val {
+                        if foliage.spawns_on.contains(&tile_type) {
+                            return foliage.foliage_type;
+                        }
+                    }
+                }
             }
         }
 

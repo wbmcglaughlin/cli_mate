@@ -53,35 +53,54 @@ fn init_biomes(
     // Foliage Init
     let cactus: Foliage = Foliage {
         foliage_type: FoliageType::CACTUS,
-        weight: 10
+        weight: 10,
+        scale: 1.0 / 16.0,
+        spawns_on: vec![SAND]
+    };
+
+    let rose: Foliage = Foliage {
+        foliage_type: FoliageType::ROSE,
+        weight: 10,
+        scale: 1.0 / 16.0,
+        spawns_on: vec![GRASS]
+    };
+
+    let rock: Foliage = Foliage {
+        foliage_type: FoliageType::ROCK,
+        weight: 10,
+        scale: 1.0 / 16.0,
+        spawns_on: vec![STONE, DIRT, GRASS]
     };
 
     // Biome 0: PLAINS BIOME
-    let plains_biome: Biome = Biome::new(20, BiomeType::PLAINS, 0.0)
+    let plains_biome: Biome = Biome::new(20, BiomeType::PLAINS, 0.3)
         .add_tile(grass_tile.clone())
         .add_tile(dirt_tile.clone())
         .add_tile(stone_tile.clone())
-        .add_tile(water_tile.clone());
+        .add_tile(water_tile.clone())
+        .add_foliage(rock.clone());
 
     // Biome 1: DESERT BIOME
-    let desert_biome: Biome = Biome::new(20, BiomeType::DESERT, 0.3)
+    let desert_biome: Biome = Biome::new(10, BiomeType::DESERT, 0.3)
         .add_tile(dirt_tile.clone().set_weight(4))
         .add_tile(sand_tile.clone().set_weight(20))
         .add_foliage(cactus.clone());
 
     // Biome 2: GRASSLANDS BIOME
-    let grassland_biome: Biome = Biome::new(30, BiomeType::GRASSLAND, 0.0)
+    let grassland_biome: Biome = Biome::new(10, BiomeType::GRASSLAND, 0.3)
         .add_tile(grass_tile.clone().set_weight(20))
         .add_tile(dirt_tile.clone().set_weight(4))
         .add_tile(stone_tile.clone().set_weight(4))
-        .add_tile(water_tile.clone().set_weight(10));
+        .add_tile(water_tile.clone().set_weight(10))
+        .add_foliage(rose.clone())
+        .add_foliage(rock.clone());
 
     // Biome 3: BEACH BIOME
     let beach_biome: Biome = Biome::new(5, BiomeType::BEACH, 0.0)
         .add_tile(water_tile.clone().set_weight(4))
         .add_tile(sand_tile.clone().set_weight(10));
 
-    let ocean_biome: Biome = Biome::new(5, BiomeType::OCEAN, 0.0)
+    let ocean_biome: Biome = Biome::new(40, BiomeType::OCEAN, 0.0)
         .add_tile(water_tile.clone().set_weight(30))
         .add_tile(sand_tile.clone().set_weight(4));
 

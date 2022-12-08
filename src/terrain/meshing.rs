@@ -30,9 +30,11 @@ impl ChunkTileMapBuilder {
         self.face_count = 0;
     }
 
-    /// ```
     /// Tiles are numbered from bottom left to top right starting with rows first.
+    ///
     /// i.e.
+    ///
+    /// ```
     /// ... N - 2, N - 1, N
     /// ... #      #      #
     /// ... #      #      #

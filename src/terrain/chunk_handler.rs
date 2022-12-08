@@ -7,7 +7,6 @@ use crate::terrain::chunk::{Chunk, CHUNK_SIDE_SIZE, CHUNK_SIZE, ChunkCoordinate,
 use crate::entities::player::{Player};
 use crate::terrain::biome::BiomeHandle;
 use crate::terrain::foliage::{FoliageType, get_foliage_paths};
-use crate::terrain::terrain::TEXTURE_DIMENSION;
 
 pub const VISIBLE_CHUNKS: i32 = 3;
 
@@ -136,9 +135,6 @@ pub fn update_chunks(
                 // Get chunk to remesh
                 let mut chunk = chunk_handler.get_chunk(coord_to_remesh);
 
-                // Generate new mesh
-                let new_mesh = chunk.generate_mesh();
-
                 // De-spawn old chunk
                 commands.entity(entity).despawn_recursive();
 
@@ -201,14 +197,16 @@ pub fn spawn_chunk(
     for x in 0..CHUNK_SIZE {
         for y in 0..CHUNK_SIZE {
             if chunk.foliage_type[x][y] != FoliageType::NONE {
-                commands.spawn(SpriteBundle {
+                let foliage_entity = commands.spawn(SpriteBundle {
                     texture: asset_server.load(get_foliage_paths(chunk.foliage_type[x][y])),
                     transform: Transform::from_xyz(
-                        chunk.coordinate.x * CHUNK_SIDE_SIZE + x as f32 * TILE_SIZE,
-                        chunk.coordinate.y * CHUNK_SIDE_SIZE + y as f32 * TILE_SIZE,
+                        x as f32 * TILE_SIZE + TILE_SIZE / 2.0,
+                        y as f32 * TILE_SIZE + TILE_SIZE / 2.0,
                         1.0).with_scale(Vec3::splat(1.0 / 16.0)),
                     ..default()
-                });
+                }).id();
+
+                commands.entity(foliage_entity).set_parent(chunk_entity);
             }
         }
     }

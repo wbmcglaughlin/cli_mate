@@ -58,7 +58,7 @@ impl Chunk {
                 };
 
                 // Set foliage
-                foliage_type[x][y] = biome.get_foliage_from_rng(foliage_noise[x][y]);
+                foliage_type[x][y] = biome.get_foliage_from_rng(foliage_noise[x][y], tile_type);
             }
         }
 

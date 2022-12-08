@@ -78,7 +78,7 @@ pub fn spawn_player(
         SpriteSheetBundle {
             texture_atlas: texture_atlas_handle,
             transform: Transform::from_translation(
-                player_position.extend(1.0))
+                player_position.extend(2.0))
                 .with_scale(Vec3::splat(1. / 16.)),
             ..default()
         },

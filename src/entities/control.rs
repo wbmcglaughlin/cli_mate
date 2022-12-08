@@ -36,6 +36,6 @@ pub fn player_movement(
 
         player.update(time.delta_seconds());
 
-        transform.translation = player_pos.extend(1.0);
+        transform.translation = player_pos.extend(2.0);
     }
 }
