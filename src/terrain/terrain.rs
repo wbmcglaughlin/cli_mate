@@ -100,7 +100,7 @@ fn init_biomes(
         .add_tile(water_tile.clone().set_weight(4))
         .add_tile(sand_tile.clone().set_weight(10));
 
-    let ocean_biome: Biome = Biome::new(40, BiomeType::OCEAN, 0.0)
+    let ocean_biome: Biome = Biome::new(30, BiomeType::OCEAN, 0.0)
         .add_tile(water_tile.clone().set_weight(30))
         .add_tile(sand_tile.clone().set_weight(4));
 
